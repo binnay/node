@@ -25,16 +25,15 @@ function showPage(req, res, task) {
     });
     stream.on("end", function() {
         res.setHeader("Content-Type", "text/html");
-        res.setHeader("Content-Length", chunk.length);
+        // res.setHeader("Content-Length", chunk.length);
         const task = JSON.parse(fs.readFileSync("./.task.json").toString());
         const taskString = task
             .map(function(item, index) {
                 return "<div>" + index + "、" + item + "</div>";
             })
             .join("");
-        console.log(taskString);
-        const result = chunk.toString() + taskString;
-        res.end(taskString);
+        const result = chunk.toString().replace("%", taskString);
+        res.end(result);
     });
     stream.on("error", function(err) {
         console.log(err);
