@@ -1,3 +1,9 @@
+/**
+ * 代码任然可以优化
+ * 比如程序初始化的时候，读取文件中的值，存入内容，以后就维持这个变量，不再读取文件
+ * 文件的获取和读取可以不适用同步的方式，按照流程化的思路来构建html文件和json文件的读取适用
+ * @type {module:http}
+ */
 const http = require("http");
 const fs = require("fs");
 const qs = require("querystring");
