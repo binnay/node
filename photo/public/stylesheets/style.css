@@ -6,3 +6,29 @@ body {
 a {
     color: #00b7ff;
 }
+
+#photos:after {
+    content: "";
+    clear: both;
+    display: block;
+}
+#photos .item {
+    height: 150px;
+    width: 200px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    border-radius: 4px;
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
+    margin-bottom: 20px;
+    margin-right: 20px;
+    float: left;
+    position: relative;
+}
+#photos .item .name {
+    position: absolute;
+    bottom: -25px;
+    left: 0;
+    right: 0;
+    text-align: center;
+}
