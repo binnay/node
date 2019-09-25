@@ -1,31 +1,73 @@
 const express = require("express");
 const router = express.Router();
+const fs = require("fs");
+const photoModels = require("../models/Photo.js");
+const path = require("path");
+const resolve = path.resolve;
+const mongoose = require("mongoose");
 
 router.get("/", function(req, res, next) {
-    res.render("photos", {
-        title: "Img preview",
-        list: [
+    photoModels.find({}, function(err, photos) {
+        if (err) return next(err);
+        res.render("photos", {
+            title: "Img preview",
+            list: photos
+        });
+    });
+});
+
+router.get("/upload", function(req, res, next) {
+    res.render("upload", {
+        title: "图片上传"
+    });
+});
+
+router.post("/upload", function(req, res, next) {
+    const uploadObj = req.files.fileObj;
+    const path = uploadObj.path;
+    const type = uploadObj.type.split("/")[1];
+    const fields = req.fields;
+    const imgName = fields.name;
+    const imgPath = path + imgName + "." + type;
+    fs.rename(path, imgPath, function(err) {
+        if (err) return next(err);
+        photoModels.create(
             {
-                src:
-                    "https://img.renlijia.com/201908/RLJRKF5u7yUZYQ3gIn1c063udk-1125-525.png",
-                name: "统计提醒"
+                name: imgName,
+                path:
+                    path.split("/")[path.split("/").length - 1] +
+                    imgName +
+                    "." +
+                    type
             },
-            {
-                src:
-                    "https://img.renlijia.com/201907/RLJi2XvuErNiEz6Q6hq7Yg3NtO-460-256.png",
-                name: "移交权限"
-            },
-            {
-                src:
-                    "https://img.renlijia.com/201907/RLJM95F7H01u324abU87F3OtP1-1500-1222.png",
-                name: "工作通知"
-            },
-            {
-                src:
-                    "https://img.renlijia.com/201907/RLJf23x4nP2fy2qppofY1y7YW9-600-862.png",
-                name: "操作日志"
+            function(err) {
+                if (err) return next(err);
+                res.redirect("/photo");
             }
-        ]
+        );
+    });
+});
+
+router.get("/del/:id", function(req, res, next) {
+    const _id = mongoose.Types.ObjectId(req.params.id);
+    photoModels.deleteOne(
+        {
+            _id
+        },
+        function(err) {
+            if (err) return next(err);
+            res.redirect("/photo");
+        }
+    );
+});
+
+router.get("/down/:id", function(req, res, next) {
+    const _id = req.params.id;
+    photoModels.findById(_id, function(err, obj) {
+        if (err) return next(err);
+        const path = resolve(__dirname, "../public/photos/" + obj.path);
+        // res.sendFile(path);
+        res.download(path);
     });
 });
 

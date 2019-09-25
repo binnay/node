@@ -20,10 +20,39 @@ a {
     background-repeat: no-repeat;
     border-radius: 4px;
     box-shadow: 0 5px 12px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
+    margin-bottom: 40px;
     margin-right: 20px;
     float: left;
     position: relative;
+    cursor: pointer;
+}
+#photos .operation-box {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    background: rgba(0, 0, 0, 0.5);
+    display: none;
+}
+#photos .item:hover .operation-box {
+    display: block;
+}
+#photos .operation-box .inner {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+#photos .operation-box img {
+    height: 30px;
+}
+#photos .operation-box img:first-child {
+    margin-right: 20px;
 }
 #photos .item .name {
     position: absolute;
